@@ -1,4 +1,8 @@
 export const ROUTES = {
-    HOME: "/",
-    MOVIELIST: "movie-list"
-}
+  HOME: '/',
+  POPULAR: '/popular',
+  TOP_RATED: '/top-rated',
+  NOW_PLAYING: '/now-playing',
+  MY_FAVORITES: '/my-favorites',
+  DETAIL: '/detail/:movieId',
+};
