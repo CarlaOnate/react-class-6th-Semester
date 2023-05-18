@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
-import {getMovieDetail} from "../../services";
-import {MovieDetailProps} from "./types";
-import { MovieCardContainer, Poster, Title, Tagline, Metadata, Overview, Label, OfficialWebsite } from "./styles";
+import {getMovieDetail, getRecommendations} from "../../services";
+import {MovieDetailProps, Recommendation} from "./types";
+import { MovieCardContainer, Poster, Title, Tagline, Metadata, Overview, Label, OfficialWebsite, RecommendationsContainer } from "./styles";
 import {SkeletonContainer} from "../../components/MovieCard/styles";
 import {Skeleton, Stack, Button} from "@mui/material";
 import {Favorite, FavoriteBorder, Star, StarBorder, StarHalf} from "@mui/icons-material";
+import {MovieCard} from "../../components/MovieCard";
 
 const MovieDetails: React.FC<{}> = (props: any) => {
   const { movieId } = useParams();
   const [ data, setData ] = useState<MovieDetailProps | null>();
+  const [ recommendations, setRecommendations ] = useState<Recommendation[] | null>();
   const [ isFavorite, setIsFavorite ] = useState(false);
 
   useEffect(() => {
@@ -17,10 +19,15 @@ const MovieDetails: React.FC<{}> = (props: any) => {
     const favorites = favoritesString ? JSON.parse(favoritesString) : [];
     movieId && setIsFavorite(favorites.includes(parseInt(movieId)));
 
-    movieId && getMovieDetail(movieId)
-      .then(data => setData(data))
-      .catch(err => console.log(err))
-  }, [])
+    if (movieId) {
+      getMovieDetail(movieId)
+        .then(data => setData(data))
+        .catch(err => console.log(err))
+      getRecommendations(movieId)
+        .then(data => setRecommendations(data))
+        .catch(err => console.log(err));
+    }
+  }, [movieId])
 
   const setFavorite = (id: number) => {
     const favoritesString = localStorage.getItem('favorites');
@@ -52,6 +59,7 @@ const MovieDetails: React.FC<{}> = (props: any) => {
     </SkeletonContainer>
   )
 
+
   const starRating = (rating: number)  => {
     const normalizedRating = rating / 2;
     const fullStars = Math.floor(normalizedRating);
@@ -79,54 +87,73 @@ const MovieDetails: React.FC<{}> = (props: any) => {
     <div>
       {data && (
         <MovieCardContainer>
-          <div className="poster-content">
-            <Poster src={`https://www.themoviedb.org/t/p/original/${data.poster_path}`} alt={data.title} />
-          </div>
-          <div className="movie-content">
-            <Title>{data.title}</Title>
-            <Tagline>{data.tagline}</Tagline>
-            <Overview>{data.overview}</Overview>
-            <Metadata>
-              <p>
-                <Label>Release Date:</Label> {data.release_date}
-              </p>
-              <p>
-                <Label>Runtime:</Label> {data.runtime} minutes
-              </p>
-              <p>
-                <Label>Genres:</Label>{' '}
-                {data.genres.map((genre) => genre.name).join(', ')}
-              </p>
-              <Stack direction="row" alignItems="center" spacing={2}>
-                  <Label>Vote Average:</Label>
-                  <div>{starRating(data.vote_average)}</div>
-              </Stack>
-              <p>
-                <Label>Production Companies:</Label>{' '}
-                {data.production_companies
-                  .map((company) => company.name)
-                  .join(', ')}
-              </p>
-              <p>
-                <Label>Spoken Languages:</Label>{' '}
-                {data.spoken_languages.map((lang
+          <div className="movie-detail">
+            <div className="poster-content">
+              <Poster src={`https://www.themoviedb.org/t/p/original/${data.poster_path}`} alt={data.title} />
+            </div>
+            <div className="movie-content">
+              <Title>{data.title}</Title>
+              <Tagline>{data.tagline}</Tagline>
+              <Overview>{data.overview}</Overview>
+              <Metadata>
+                <p>
+                  <Label>Release Date:</Label> {data.release_date}
+                </p>
+                <p>
+                  <Label>Runtime:</Label> {data.runtime} minutes
+                </p>
+                <p>
+                  <Label>Genres:</Label>{' '}
+                  {data.genres.map((genre) => genre.name).join(', ')}
+                </p>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                    <Label>Vote Average:</Label>
+                    <div>{starRating(data.vote_average)}</div>
+                </Stack>
+                <p>
+                  <Label>Production Companies:</Label>{' '}
+                  {data.production_companies
+                    .map((company) => company.name)
+                    .join(', ')}
+                </p>
+                <p>
+                  <Label>Spoken Languages:</Label>{' '}
+                  {data.spoken_languages.map((lang
 
-                ) => lang.name).join(', ')}
-              </p>
-            </Metadata>
-            <div className="detail-buttons">
-              <OfficialWebsite
-                href={data.homepage}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Official Website
-              </OfficialWebsite>
-              <Button variant="outlined" onClick={() => setFavorite(data.id)}>
-                {isFavorite ? (<><Favorite color="error" />   Favorite</>) : (<><FavoriteBorder color="error"/>   Add to Favorite</>)}
-              </Button>
+                  ) => lang.name).join(', ')}
+                </p>
+              </Metadata>
+              <div className="detail-buttons">
+                <OfficialWebsite
+                  href={data.homepage}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Official Website
+                </OfficialWebsite>
+                <Button variant="outlined" onClick={() => setFavorite(data.id)}>
+                  {isFavorite ? (<><Favorite color="error" />   Favorite</>) : (<><FavoriteBorder color="error"/>   Add to Favorite</>)}
+                </Button>
+              </div>
             </div>
           </div>
+          <RecommendationsContainer>
+            <h3>Recommendations</h3>
+            {recommendations && (
+            <Stack direction="row">
+              {recommendations.map(movie => (
+                <MovieCard
+                  movieId={movie.id}
+                  key={movie.id}
+                  path={movie.poster_path}
+                  title={movie.title}
+                  voteAverage={movie.vote_average}
+                  genreId={movie.genre_ids[0]}
+                />
+              ))}
+            </Stack>
+            )}
+          </RecommendationsContainer>
         </MovieCardContainer>
       )}
       {!data && spinner()}

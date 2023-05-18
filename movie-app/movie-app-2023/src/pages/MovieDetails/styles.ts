@@ -2,12 +2,18 @@ import styled from 'styled-components';
 
 export const MovieCardContainer = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   margin: 2% 5%;
   padding: 20px;
   background-color: #f5f5f5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  gap: 5%;
+  gap: 10%;
+
+  .movie-detail {
+    display: flex;
+    align-items: center;
+    gap: 5%;
+  }
   
   .poster-content {
     flex-grow: 1;
@@ -67,3 +73,8 @@ export const OfficialWebsite = styled.a`
     background-color: #0056b3;
   }
 `;
+
+export const RecommendationsContainer = styled.div`
+  width: 100%;
+  overflow: scroll;
+`
