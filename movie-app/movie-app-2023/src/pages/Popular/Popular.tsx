@@ -3,10 +3,12 @@ import { MovieCard } from "components/MovieCard";
 import { getPopular } from "services";
 import {HorizontalRadioGroup} from "../../components/HorizontalRadioGroup";
 import {filterBy} from "../../util/movieFilter";
+import {MovieType} from "../Home/types";
+import {Stack} from "@mui/material";
 
 const Popular: React.FC = () => {
-  const [movies, setMovies] = useState<any[]>([]);
-  const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieType[]>([]);
+  const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [value, setValue] = React.useState<number>(0);
 
   const getPopularMovies = async () => {
@@ -38,12 +40,13 @@ const Popular: React.FC = () => {
   const moviesToShow = value === 0 ? movies : filteredMovies;
 
   return (
-    <div>
-      <h1>Popular</h1>
-      <div>
-        <HorizontalRadioGroup value={value} handleChange={handleChange} />
-      </div>
-        {moviesToShow && moviesToShow.map((movie) => (
+    <Stack alignItems="center">
+      <Stack width="80%">
+        <h1>Popular</h1>
+        <div><HorizontalRadioGroup value={value} handleChange={handleChange} /></div>
+      </Stack>
+      <Stack direction="row" justifyContent="center" flexWrap="wrap">
+      {moviesToShow && moviesToShow.map((movie) => (
           <MovieCard
             movieId={movie.id}
             key={movie.id}
@@ -53,7 +56,8 @@ const Popular: React.FC = () => {
             genreId={movie.genre_ids[0]}
           />
         ))}
-    </div>
+      </Stack>
+    </Stack>
   );
 };
 

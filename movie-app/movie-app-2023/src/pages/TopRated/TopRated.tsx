@@ -3,6 +3,7 @@ import { getTopRated } from "../../services";
 import {MovieCard} from "../../components/MovieCard";
 import {filterBy} from "../../util/movieFilter";
 import {HorizontalRadioGroup} from "../../components/HorizontalRadioGroup";
+import {Stack} from "@mui/material";
 
 const TopRated = () => {
   const [movies, setMovies] = useState<any[]>([]);
@@ -32,11 +33,12 @@ const TopRated = () => {
 
 
   return (
-    <div>
-      <h1>TopRated</h1>
-      <div>
-        <HorizontalRadioGroup value={value} handleChange={handleChange} />
-      </div>
+    <Stack alignItems="center">
+      <Stack width="80%">
+        <h1>Top Rated</h1>
+        <div><HorizontalRadioGroup value={value} handleChange={handleChange} /></div>
+      </Stack>
+      <Stack direction="row" justifyContent="center" flexWrap="wrap">
       {moviesToShow && moviesToShow.map((movie) => (
         <MovieCard
           movieId={movie.id}
@@ -47,7 +49,8 @@ const TopRated = () => {
           genreId={movie.genre_ids[0]}
         />
       ))}
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 

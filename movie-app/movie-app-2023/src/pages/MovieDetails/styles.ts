@@ -12,18 +12,20 @@ export const MovieCardContainer = styled.div`
   .movie-detail {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 5%;
   }
   
   .poster-content {
-    flex-grow: 1;
-    width: 30%;
+    flex-basis: 30%;
+    max-width: 30%;
   }
-  
+
   .movie-content {
-    flex-grow: 2;
+    flex-basis: 60%;
+    max-width: 60%;
   }
-  
+
   .detail-buttons {
     display: flex;
     gap: 10px;
@@ -32,9 +34,9 @@ export const MovieCardContainer = styled.div`
 
 export const Poster = styled.img`
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  margin-right: 20px;
+  height: auto;
+  object-fit: cover;
+  max-width: 100%;
   border-radius: 10px;
 `;
 

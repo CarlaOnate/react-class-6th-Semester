@@ -35,9 +35,9 @@ const MovieCard: React.FC<MovieCardProp> = ({
 
   const getColor = (rating: number) => {
     if(rating >= 8){
-      return '#74B566';
-    }else if (rating >= 7){
-      return '#efca54';
+      return '#007f4f';
+    } else if (rating >= 7){
+      return '#005b4e';
     }
   }
 

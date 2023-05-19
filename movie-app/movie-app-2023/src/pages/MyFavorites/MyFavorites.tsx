@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Movie} from "./types";
 import {getMovieDetail} from "../../services";
 import {MovieCard} from "../../components/MovieCard";
+import {Stack} from "@mui/material";
 
 const MyFavorites = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -18,9 +19,11 @@ const MyFavorites = () => {
   }, []);
 
   return (
-    <div>
-      <h1>MyFavorites</h1>
-      <div>
+    <Stack alignItems="center">
+      <Stack width="80%">
+        <h1>My Favorites</h1>
+      </Stack>
+      <Stack direction="row" justifyContent="center" flexWrap="wrap">
         {movies && movies.map(movie => (
           <MovieCard
             key={movie.id}
@@ -31,8 +34,8 @@ const MyFavorites = () => {
             genreId={movie.genres[0].id}
           />
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
 
   )
 }

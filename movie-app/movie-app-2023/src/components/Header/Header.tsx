@@ -66,7 +66,7 @@ export default function Header(props: Props) {
   return (
     <BoxStyled>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{ backgroundColor: "#008b78"}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -82,12 +82,12 @@ export default function Header(props: Props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            MOVIES DB 3000
+            My movies DB
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} to={item.path}>
-                <Button sx={{ color: "#fff" }}>
+                <Button sx={{ color: "#fff", fontWeight: "bold" }}>
                   {item.name}
                 </Button>
               </Link>
@@ -115,7 +115,7 @@ export default function Header(props: Props) {
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main" sx={{ p: 1 }}>
         <Toolbar />
       </Box>
     </BoxStyled>

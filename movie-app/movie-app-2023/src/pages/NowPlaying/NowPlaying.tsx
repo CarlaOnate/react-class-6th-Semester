@@ -3,9 +3,11 @@ import {getNowPlaying} from "../../services";
 import {MovieCard} from "../../components/MovieCard";
 import {filterBy} from "../../util/movieFilter";
 import {HorizontalRadioGroup} from "../../components/HorizontalRadioGroup";
+import {MovieType} from "../Home/types";
+import {Stack} from "@mui/material";
 const NowPlaying = () => {
-  const [movies, setMovies] = useState<any[]>([]);
-  const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
+  const [movies, setMovies] = useState<MovieType[]>([]);
+  const [filteredMovies, setFilteredMovies] = useState<MovieType[]>([]);
   const [value, setValue] = React.useState<number>(0);
 
   useEffect(  () => {
@@ -30,12 +32,12 @@ const NowPlaying = () => {
   const moviesToShow = value === 0 ? movies : filteredMovies;
 
   return (
-    <div>
-      <h1>NowPlaying</h1>
-      <div>
-        <HorizontalRadioGroup value={value} handleChange={handleChange} />
-      </div>
-      <div>
+    <Stack alignItems="center">
+      <Stack width="80%">
+        <h1>Now Playing</h1>
+        <div><HorizontalRadioGroup value={value} handleChange={handleChange} /></div>
+      </Stack>
+      <Stack direction="row" justifyContent="center" flexWrap="wrap">
         {moviesToShow && moviesToShow.map((movie) => (
           <MovieCard
             movieId={movie.id}
@@ -46,8 +48,8 @@ const NowPlaying = () => {
             genreId={movie.genre_ids[0]}
           />
         ))}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   )
 }
 
