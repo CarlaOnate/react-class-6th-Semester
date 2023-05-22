@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {filterBy} from "../../util/movieFilter";
 import {HorizontalRadioGroup} from "../../components/HorizontalRadioGroup";
 import {MovieType} from "./types";
-import {Stack, Box} from "@mui/material";
+import {Stack} from "@mui/material";
 
 const Home = () => {
   const [movies, setMovies] = useState<MovieType[]>([]);
