@@ -18,12 +18,14 @@ const MyFavorites = () => {
     getFavoriteMovies().then(moviesList => setMovies(moviesList));
   }, []);
 
+
   return (
     <Stack alignItems="center">
       <Stack width="80%">
         <h1>My Favorites</h1>
       </Stack>
       <Stack direction="row" justifyContent="center" flexWrap="wrap">
+        {!movies && <p>No hay películas favoritas</p>}
         {movies && movies.map(movie => (
           <MovieCard
             key={movie.id}
@@ -36,7 +38,6 @@ const MyFavorites = () => {
         ))}
       </Stack>
     </Stack>
-
   )
 }
 
